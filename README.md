@@ -1,4 +1,6 @@
-cs157b-olap-gui
+OLAP GUI
 ===============
 
-An interactive GUI application to perform OLAP operations.
+*Group Project for CS 157B, Spring 2014*
+
+An interactive GUI application to perform OLAP operations on the givens grocery database.
