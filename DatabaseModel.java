@@ -62,8 +62,8 @@ public class DatabaseModel
 	 */
 	private static String removeLastChar(String s, int i) 
 	{
-        return s.substring(0, s.length() - i);
-    }
+		return s.substring(0, s.length() - i);
+	}
 	
 	/**
 	 * For testing purposes.

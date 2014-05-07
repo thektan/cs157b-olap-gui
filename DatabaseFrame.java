@@ -1,22 +1,34 @@
 import java.awt.GridLayout;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class DatabaseFrame extends JFrame{
 
-
+	private static Connection connection;
+	private static PreparedStatement preparedStatement = null;
+	
 	private DimensionPanel store,product,promotion,time;
 	private ArrayList<String> storeAttributes = new ArrayList<String>();
 	private ArrayList<String> productAttributes = new ArrayList<String>();
 	private ArrayList<String> promotionAttributes = new ArrayList<String>();
 	private ArrayList<String> timeAttributes = new ArrayList<String>();
-	public DatabaseFrame()
+	JPanel rightPanel;
+	
+	public DatabaseFrame(final Connection conn)
 	{
-
+		connection = conn;
+		
 		populateAttribute();
 		store = new DimensionPanel("Store",storeAttributes);
 		product = new DimensionPanel("Product",productAttributes);
@@ -29,11 +41,19 @@ public class DatabaseFrame extends JFrame{
 		leftPanel.add(product);
 		leftPanel.add(promotion);
 		leftPanel.add(time);
+		
+		rightPanel = new JPanel();
+		
 		this.add(leftPanel);
-
-
-
-
+		this.add(rightPanel);
+		
+		try {
+			updateTable("SELECT * FROM time");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 
@@ -109,5 +129,56 @@ public class DatabaseFrame extends JFrame{
 		timeAttributes.add("year");
 		timeAttributes.add("holiday flag");
 
+	}
+	
+	/**
+	 * Builds a table model
+	 * @author Paul Vargas on http://stackoverflow.com/questions/10620448/most-simple-code-to-populate-jtable-from-resultset
+	 * @param rs the result set
+	 * @return a table model with the data and column names
+	 * @throws SQLException
+	 */
+	public static DefaultTableModel buildTableModel(ResultSet rs) throws SQLException 
+	{
+        ResultSetMetaData metaData = rs.getMetaData();
+
+        // names of columns
+        Vector<String> columnNames = new Vector<String>();
+        int columnCount = metaData.getColumnCount();
+        for (int column = 1; column <= columnCount; column++) {
+            columnNames.add(metaData.getColumnName(column));
+        }
+
+        // data of the table
+        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        while (rs.next()) {
+            Vector<Object> vector = new Vector<Object>();
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                vector.add(rs.getObject(columnIndex));
+            }
+            data.add(vector);
+        }
+
+        return new DefaultTableModel(data, columnNames);
+    }
+	
+	
+	/**
+	 * Updates the table with a new ranking category
+	 * @param statement the SQL query to be executed
+	 * @throws SQLException
+	 */
+	public void updateTable(String statement) throws SQLException
+	{
+		rightPanel.removeAll(); // first clear the existing table
+		
+		preparedStatement = connection.prepareStatement(statement);
+        ResultSet resultSet = preparedStatement.executeQuery();
+	    JTable table = new JTable(buildTableModel(resultSet));
+	    
+	    rightPanel.add(new JScrollPane(table)); // add the new table to the panel
+	    
+	    rightPanel.repaint();
+	    rightPanel.revalidate();
 	}
 }
