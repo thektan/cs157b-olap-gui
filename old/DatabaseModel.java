@@ -65,7 +65,6 @@ public class DatabaseModel
 		return s.substring(0, s.length() - i);
 	}
 	
-	
 	/**
 	 * For testing purposes.
 	 * @param args not used.

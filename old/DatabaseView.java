@@ -1,13 +1,14 @@
 import java.sql.Connection;
+
 import javax.swing.JFrame;
 
+
 public class DatabaseView {
-
-
+	
 	public static void main(String[] args)
 	{
 		Connection c = DAO.Connect();
-
+		
 		DatabaseFrame view = new DatabaseFrame(c);
 		
 		view.setSize(1600,600);
@@ -16,4 +17,5 @@ public class DatabaseView {
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setVisible(true);
 	}
+	
 }

@@ -1,62 +1,64 @@
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JScrollPane;
 
+public class DimensionPanel extends JPanel {
 
-public class DimensionPanel extends JPanel{
-
-	String title;
-	JPanel radioPanel;
-	ArrayList<String> attributeList;
-
-	public DimensionPanel(String title,ArrayList<String> attribute)
+	JCheckBox dimension; 
+	JButton slice,dice;
+	String titleDimension;
+	
+	public DimensionPanel(String title)
 	{
-		attributeList = attribute;
-		this.title = title;
-		radioPanel = new JPanel(new GridLayout(0,1,3,3));
-		radioPanel.setBorder(BorderFactory.createTitledBorder(title));
-		JScrollPane scrPane = new JScrollPane(radioPanel);
-		scrPane.setPreferredSize(new Dimension(200,250));
-		this.add(scrPane);
-		OnCreate();
-
-
-
-
+		titleDimension = title;
+	
+		onCreate();		
 	}
-
-	public void OnCreate()
+	
+	
+	public void onCreate()
 	{	
-
-		final ButtonGroup radioGroup  = new ButtonGroup();
-
-		for(int i = 0; i < attributeList.size();i++)
-		{		
-			String name = attributeList.get(i);			
-			JRadioButton tempButton = new JRadioButton(name);
-
-			tempButton.setActionCommand(name);
-			tempButton.addActionListener(new ActionListener()
-			{
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					System.out.println(title+":"+arg0.getActionCommand());
-				}
-
-			});
-			radioGroup.add(tempButton);
-			radioPanel.add(tempButton);
-
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		JPanel firstPanel = new JPanel();
+		firstPanel.setLayout((new BoxLayout(firstPanel, BoxLayout.Y_AXIS)));
+		dimension = new JCheckBox(titleDimension);
+		slice = new JButton("Slice");
+		dice = new JButton("dice");
+		firstPanel.add(dimension);
+		firstPanel.add(slice);
+		firstPanel.add(dice);
+		add(firstPanel);
+	}
+	
+	public void addAttributes(String title,Boolean isHiearchy,ArrayList<String> attributeList)
+	{
+		String tempTitle;
+		if(isHiearchy)
+		{
+			tempTitle = title+ "-Hierarchy";
+			addHiearchyAttributes(tempTitle,attributeList);
+		}else
+		{
+			tempTitle = title + "-Normal Attribute";
+			addNormalAttributes(tempTitle,attributeList);
 		}
 	}
-
+	
+	
+	public void addHiearchyAttributes(String title, ArrayList<String> attributeList)
+	{
+		AttributePanel tempAttribute = new AttributePanel(title,attributeList);
+		tempAttribute.hierarchyCreate();
+		add(tempAttribute);
+	}
+	
+	public void addNormalAttributes(String title, ArrayList<String> attributeList)
+	{
+		AttributePanel tempAttribute = new AttributePanel(title,attributeList);
+		tempAttribute.normalCreate();
+		add(tempAttribute);
+	}
 }

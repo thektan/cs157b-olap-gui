@@ -1,12 +1,9 @@
 import java.awt.GridLayout;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -18,34 +15,45 @@ public class DatabaseFrame extends JFrame{
 	private static Connection connection;
 	private static PreparedStatement preparedStatement = null;
 	
-	private DimensionPanel store,product,promotion,time;
-	private ArrayList<String> storeAttributes = new ArrayList<String>();
-	private ArrayList<String> productAttributes = new ArrayList<String>();
-	private ArrayList<String> promotionAttributes = new ArrayList<String>();
-	private ArrayList<String> timeAttributes = new ArrayList<String>();
-	JPanel rightPanel;
+	JPanel leftPanel;
+	JPanel tablePanel;
+	
+	DimensionPanel store;
+	DimensionPanel time;
+	DimensionPanel product;
+	
+	
+	// Variables used to construct the SQL statement.
+	public static boolean store_name = false;
+	public static boolean store_number = false;
+	public static String store_location, store_sqft;
 	
 	public DatabaseFrame(final Connection conn)
 	{
 		connection = conn;
-		
-		populateAttribute();
-		store = new DimensionPanel("Store",storeAttributes);
-		product = new DimensionPanel("Product",productAttributes);
-		promotion = new DimensionPanel("Promotion",promotionAttributes);
-		time = new DimensionPanel("Time",timeAttributes);
-		setLayout(new GridLayout(0,2));
-		JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new GridLayout(0,2));
+
+		onCreate();
+		populateDimension();
+		setLayout(new GridLayout(2,1));
+	}
+	
+	
+	public void onCreate()
+	{
+		leftPanel = new JPanel();
+		store = new DimensionPanel("store");
+		time = new DimensionPanel("time");
+		product = new DimensionPanel("product");
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		leftPanel.add(store);
-		leftPanel.add(product);
-		leftPanel.add(promotion);
 		leftPanel.add(time);
+		leftPanel.add(product);
 		
-		rightPanel = new JPanel();
+		tablePanel = new JPanel();
+		tablePanel.setLayout(new GridLayout(0,1));
 		
-		this.add(leftPanel);
-		this.add(rightPanel);
+		add(leftPanel);
+		add(tablePanel);
 		
 		try {
 			updateTable("SELECT * FROM time");
@@ -53,81 +61,75 @@ public class DatabaseFrame extends JFrame{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
-
-
-	public void populateAttribute()
+	
+	
+	public void populateDimension()
 	{
-		storeAttributes.add("none");
-		storeAttributes.add("name");
-		storeAttributes.add("store number");
-		storeAttributes.add("store street address");
-		storeAttributes.add("city");
-		storeAttributes.add("county");
-		storeAttributes.add("state");
-		storeAttributes.add("zip code");
-		storeAttributes.add("district");
-		storeAttributes.add("region");
-		storeAttributes.add("manager");
-		storeAttributes.add("phone");
-		storeAttributes.add("fax");
-		storeAttributes.add("floor plan");
-		storeAttributes.add("photo processing type");
-		storeAttributes.add("finance service type");
-		storeAttributes.add("first opened date");
-		storeAttributes.add("last remodeled date");
-		storeAttributes.add("store sqft");
-		storeAttributes.add("grocery sqft");
-		storeAttributes.add("frozen sqft");
-		storeAttributes.add("meat sqft");
 
-
-		productAttributes.add("none");
-		productAttributes.add("description");
-		productAttributes.add("full_description");
-		productAttributes.add("SKU number");
-		productAttributes.add("package size");
-		productAttributes.add("brand");
-		productAttributes.add("subcategory");
-		productAttributes.add("category");
-		productAttributes.add("department");
-		productAttributes.add("package type");
-		productAttributes.add("diet type");
-		productAttributes.add("weight");
-		productAttributes.add("weight unit of measure");
-		productAttributes.add("unit per retail case");
-		productAttributes.add("unit per shipping case");
-		productAttributes.add("cases per pallet");
-		productAttributes.add("shelf width cm");
-		productAttributes.add("shelf height cm");
-		productAttributes.add("shelf depth cm");
-
-
-		promotionAttributes.add("none");
-		promotionAttributes.add("promotion name");
-		promotionAttributes.add("price reduction type");
-		promotionAttributes.add("ad type");
-		promotionAttributes.add("display type");
-		promotionAttributes.add("coupon type");
-		promotionAttributes.add("ad media type");
-		promotionAttributes.add("display provider ");
-		promotionAttributes.add("promo cost");
-		promotionAttributes.add("promo begin date");
-		promotionAttributes.add("promo end date");
-
-		timeAttributes.add("none");
-		timeAttributes.add("date");
-		timeAttributes.add("day of week");
-		timeAttributes.add("day number in month");
-		timeAttributes.add("day number overall");
-		timeAttributes.add("week number in y ear");
-		timeAttributes.add("week number overall");
-		timeAttributes.add("month");
-		timeAttributes.add("quarter");
-		timeAttributes.add("fiscal period");
-		timeAttributes.add("year");
-		timeAttributes.add("holiday flag");
+		ArrayList<String> firstStoreAttribute  = new ArrayList<String>();
+		firstStoreAttribute.add("name");
+		firstStoreAttribute.add("store_number");
+		store.addAttributes("Store",false, firstStoreAttribute);
+		
+		
+		
+		ArrayList<String> secondStoreAttribute  = new ArrayList<String>();
+		secondStoreAttribute.add("store_street_address");
+		secondStoreAttribute.add("zip_code");
+		secondStoreAttribute.add("city");
+		secondStoreAttribute.add("county");
+		secondStoreAttribute.add("state");
+		store.addAttributes("Store Location",true, secondStoreAttribute);
+		
+		
+		ArrayList<String> thirdStoreAttribute  = new ArrayList<String>();
+		thirdStoreAttribute.add("meat_sqft");
+		thirdStoreAttribute.add("frozen_sqft");
+		thirdStoreAttribute.add("grocery_sqft");
+		thirdStoreAttribute.add("store_sqft");
+		store.addAttributes("Store Sqft",true, thirdStoreAttribute);
+		
+		
+		ArrayList<String> firstProductAttribute  = new ArrayList<String>();
+		firstProductAttribute.add("SKU_number");
+		product.addAttributes("Product",false,firstProductAttribute);
+		
+		ArrayList<String> secondProductAttribute  = new ArrayList<String>();
+		secondProductAttribute.add("description");
+		secondProductAttribute.add("full_description");
+		product.addAttributes("Product Description",true,secondProductAttribute);
+		
+		ArrayList<String> thirdProductAttribute  = new ArrayList<String>();
+		thirdProductAttribute.add("brand");
+		thirdProductAttribute.add("subcategory");
+		thirdProductAttribute.add("category");
+		thirdProductAttribute.add("department");
+		product.addAttributes("Product Section",true,thirdProductAttribute);
+		
+		ArrayList<String> fourthProductAttribute  = new ArrayList<String>();
+		fourthProductAttribute.add("unit_per_retail_case");
+		fourthProductAttribute.add("unit_per_shipping_case");
+		fourthProductAttribute.add("cases per pallet");
+		product.addAttributes("Product Units",true,fourthProductAttribute);
+	
+		
+		ArrayList<String> firstTimeAttribute  = new ArrayList<String>();	
+		firstTimeAttribute .add("date");
+		time.addAttributes("Time", false, firstTimeAttribute);
+		
+		ArrayList<String> secondTimeAttribute  = new ArrayList<String>();
+		secondTimeAttribute.add("day_of_week");
+		secondTimeAttribute.add("week_number_in_year");
+		secondTimeAttribute.add("week_number_overall");
+		time.addAttributes("Time Day", true, secondTimeAttribute);
+		
+		ArrayList<String> thirdTimeAttribute  = new ArrayList<String>();
+		thirdTimeAttribute.add("day_number_in_month");
+		thirdTimeAttribute.add("month");
+		thirdTimeAttribute.add("quarter");
+		thirdTimeAttribute.add("year");
+		time.addAttributes("Time Year", true, thirdTimeAttribute);
 
 	}
 	
@@ -161,8 +163,8 @@ public class DatabaseFrame extends JFrame{
 
         return new DefaultTableModel(data, columnNames);
     }
-	
-	
+
+
 	/**
 	 * Updates the table with a new ranking category
 	 * @param statement the SQL query to be executed
@@ -170,15 +172,16 @@ public class DatabaseFrame extends JFrame{
 	 */
 	public void updateTable(String statement) throws SQLException
 	{
-		rightPanel.removeAll(); // first clear the existing table
-		
+		tablePanel.removeAll(); // first clear the existing table
+
 		preparedStatement = connection.prepareStatement(statement);
         ResultSet resultSet = preparedStatement.executeQuery();
 	    JTable table = new JTable(buildTableModel(resultSet));
-	    
-	    rightPanel.add(new JScrollPane(table)); // add the new table to the panel
-	    
-	    rightPanel.repaint();
-	    rightPanel.revalidate();
+
+	    tablePanel.add(new JScrollPane(table)); // add the new table to the panel
+
+	    tablePanel.repaint();
+	    tablePanel.revalidate();
 	}
+	
 }
