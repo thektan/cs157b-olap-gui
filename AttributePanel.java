@@ -1,9 +1,15 @@
+/**
+ * Panel that holds all of the attributes in each group
+ * of attributes for the hierarchy if applicable.
+ * 
+ * CS 157B - Spring 2014
+ * @author Vinh Doan, Farjahan Hossain, Kevin Tan
+ */
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -11,9 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
-public class AttributePanel extends JPanel {
-
-	
+public class AttributePanel extends JPanel 
+{
 	Boolean isHierarchy;
 	String title;
 	JPanel radioPanel;
@@ -33,11 +38,8 @@ public class AttributePanel extends JPanel {
 		this.add(scrPane);
 	}
 	
-	
-	
 	public void hierarchyCreate()
 	{	
-
 		final ButtonGroup radioGroup  = new ButtonGroup();
 		radioList  = new ArrayList<JRadioButton>(); 
 		
@@ -49,15 +51,13 @@ public class AttributePanel extends JPanel {
 			tempButton.addActionListener(new ActionListener()
 			{
 				@Override
-				public void actionPerformed(ActionEvent arg0) {
+				public void actionPerformed(ActionEvent arg0) 
+				{
 					//System.out.println(arg0.getActionCommand());
-					
 					// Store Selections
 					if (title.equals("Store Location-Hierarchy")) DatabaseFrame.store_location = arg0.getActionCommand();
 					else if (title.equals("Store Sqft-Hierarchy")) DatabaseFrame.store_sqft = arg0.getActionCommand();
-					
 					//System.out.println(DatabaseFrame.store_name + " " + DatabaseFrame.store_number + DatabaseFrame.store_location + DatabaseFrame.store_sqft);
-
 				}
 			});
 			radioList.add(tempButton);
@@ -69,7 +69,6 @@ public class AttributePanel extends JPanel {
 	
 	public void normalCreate()
 	{	
-
 		checkBoxList = new ArrayList<JCheckBox>();
 		for(int i = 0; i < attributeList.size();i++)
 		{		

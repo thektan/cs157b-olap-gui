@@ -1,9 +1,14 @@
+/**
+ * View for the program.
+ * 
+ * CS 157B - Spring 2014
+ * @author Vinh Doan, Farjahan Hossain, Kevin Tan
+ */
 import java.sql.Connection;
 import javax.swing.JFrame;
 
-public class DatabaseView {
-
-
+public class DatabaseView 
+{
 	public static void main(String[] args)
 	{
 		Connection c = DAO.Connect();

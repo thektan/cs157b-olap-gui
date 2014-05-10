@@ -19,7 +19,7 @@ public class DatabaseModel
 	public static String SQL = ""; // The SQL statement to be executed.
 	public static String fact_table_name = "sales_fact"; // Identify the fact table name.
 	public String fact_string;
-	public ArrayList<String> slice_list = new ArrayList<String>();
+	public ArrayList<String> slice_dice_list = new ArrayList<String>();
 	public List<Boolean> dimensions_boolean = new ArrayList<Boolean>();
 	public List<String> dimensions = new ArrayList<String>(), 
 						attributes = new ArrayList<String>(), 
@@ -39,8 +39,9 @@ public class DatabaseModel
 		SQL += "SELECT";
 		for (String s : attributes) // Gets the selected attributes.
 			SQL += " " + s + ",";
-		for (String s : fact_attributes) // Gets the fact table attributes and wraps with sum().
-			SQL += " sum(" + s + ") as \""+ s + "\",";
+		//for (String s : fact_attributes) // Gets the fact table attributes and wraps with sum().
+		//	SQL += " sum(" + s + ") as \""+ s + "\",";
+		SQL += " sum(" + fact_string + ") as \""+ fact_string + "\",";
 		SQL = removeLastChar(SQL, 1); // Remove the trailing comma.
 		
 		SQL += " FROM";
@@ -53,7 +54,7 @@ public class DatabaseModel
 		// Assumes that primary keys will be the format "[dimension_name]_key"
 		for (String s : dimensions)
 			SQL += " " + fact_table_name + "." + s + "_key = " + s + "." + s + "_key AND";
-		for (String s : slice_list)
+		for (String s : slice_dice_list)
 			SQL += " " + s + " AND";
 		SQL = removeLastChar(SQL, 4); // Remove the trailing AND.
 		
@@ -86,6 +87,7 @@ public class DatabaseModel
 		dimensions.clear();
 		attributes.clear();
 		fact_attributes.clear();
+		slice_dice_list.clear();
 	}
 	
 	/**

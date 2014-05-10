@@ -1,3 +1,9 @@
+/**
+ * Main frame that holds all of the panels, buttons, and table.
+ * 
+ * CS 157B - Spring 2014
+ * @author Vinh Doan, Farjahan Hossain, Kevin Tan
+ */
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.sql.Connection;
@@ -7,7 +13,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
-
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -45,7 +50,6 @@ public class DatabaseFrame extends JFrame{
 		populateDimension();
 		
 	}
-	
 	
 	public void onCreate()
 	{
