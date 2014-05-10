@@ -33,6 +33,7 @@ public class DatabaseFrame extends JFrame
 	DimensionPanel store;
 	DimensionPanel time;
 	DimensionPanel product;
+	DimensionPanel promotion;
 	ArrayList<DimensionPanel> dimensionList;
 	
 	// Variables used to construct the SQL statement.
@@ -65,15 +66,17 @@ public class DatabaseFrame extends JFrame
 		store = new DimensionPanel("store");
 		time = new DimensionPanel("time");
 		product = new DimensionPanel("product");
-		//leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-		leftPanel.setLayout(new GridLayout(3,1));
+		promotion = new DimensionPanel("promotion");
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		leftPanel.add(store);
 		leftPanel.add(time);
 		leftPanel.add(product);
+		leftPanel.add(promotion);
 		
 		dimensionList.add(store);
 		dimensionList.add(time);
 		dimensionList.add(product);
+		dimensionList.add(promotion);
 		
 		rightPanel = new JPanel();
 		rightPanel.setLayout(new GridLayout(2,1));
@@ -94,16 +97,26 @@ public class DatabaseFrame extends JFrame
 	 */
 	public void populateDimension()
 	{
-
+		// Store Dimension
 		ArrayList<String> firstStoreAttribute  = new ArrayList<String>();
 		firstStoreAttribute.add("name");
 		firstStoreAttribute.add("store_number");
+		firstStoreAttribute.add("store_manager");
+		firstStoreAttribute.add("store_phone");
+		firstStoreAttribute.add("store_FAX");
+		firstStoreAttribute.add("floor_plan_type");
+		firstStoreAttribute.add("photo_processing_type");
+		firstStoreAttribute.add("finance_services_type");
+		firstStoreAttribute.add("first_opened_date");
+		firstStoreAttribute.add("last_remodel_date");
 		store.addAttributes("Store",false, firstStoreAttribute);
 		
 		ArrayList<String> secondStoreAttribute  = new ArrayList<String>();
 		secondStoreAttribute.add("store_street_address");
 		secondStoreAttribute.add("store_zip");
 		secondStoreAttribute.add("city");
+		secondStoreAttribute.add("sales_district");
+		secondStoreAttribute.add("sales_region");
 		secondStoreAttribute.add("store_county");
 		secondStoreAttribute.add("store_state");
 		store.addAttributes("Store Location",true, secondStoreAttribute);
@@ -115,9 +128,17 @@ public class DatabaseFrame extends JFrame
 		thirdStoreAttribute.add("store_sqft");
 		store.addAttributes("Store Sqft",true, thirdStoreAttribute);
 		
-		
+		// Product Dimension
 		ArrayList<String> firstProductAttribute  = new ArrayList<String>();
 		firstProductAttribute.add("SKU_number");
+		firstProductAttribute.add("package_size");
+		firstProductAttribute.add("package_type");
+		firstProductAttribute.add("diet_type");
+		firstProductAttribute.add("weight");
+		firstProductAttribute.add("weight_unit_of_measure");
+		firstProductAttribute.add("shelf_width_cm");
+		firstProductAttribute.add("shelf_height_cm");
+		firstProductAttribute.add("shelf_depth_cm");
 		product.addAttributes("Product",false,firstProductAttribute);
 		
 		ArrayList<String> secondProductAttribute  = new ArrayList<String>();
@@ -138,23 +159,37 @@ public class DatabaseFrame extends JFrame
 		fourthProductAttribute.add("cases_per_pallet");
 		product.addAttributes("Product Unit",true,fourthProductAttribute);
 	
-		
+		// Time Dimension
 		ArrayList<String> firstTimeAttribute  = new ArrayList<String>();	
-		firstTimeAttribute .add("date");
+		firstTimeAttribute .add("holiday_flag");
 		time.addAttributes("Time", false, firstTimeAttribute);
 		
 		ArrayList<String> secondTimeAttribute  = new ArrayList<String>();
+		secondTimeAttribute.add("date");
 		secondTimeAttribute.add("day_of_week");
+		secondTimeAttribute.add("day_number_in_month");
+		secondTimeAttribute.add("day_number_overall");
 		secondTimeAttribute.add("week_number_in_year");
 		secondTimeAttribute.add("week_number_overall");
-		time.addAttributes("Time Week", true, secondTimeAttribute);
+		secondTimeAttribute.add("Month");
+		secondTimeAttribute.add("quarter");
+		secondTimeAttribute.add("fiscal_period");
+		secondTimeAttribute.add("year");
+		time.addAttributes("Time Year", true, secondTimeAttribute);
 		
-		ArrayList<String> thirdTimeAttribute  = new ArrayList<String>();
-		thirdTimeAttribute.add("day_number_in_month");
-		thirdTimeAttribute.add("Month");
-		thirdTimeAttribute.add("quarter");
-		thirdTimeAttribute.add("year");
-		time.addAttributes("Time Year", true, thirdTimeAttribute);
+		// Promotion Dimension
+		ArrayList<String> firstPromotionAttribute  = new ArrayList<String>();	
+		firstPromotionAttribute.add("promotion_name");
+		firstPromotionAttribute.add("price_reduction_type");
+		firstPromotionAttribute.add("ad_type");
+		firstPromotionAttribute.add("display_type");
+		firstPromotionAttribute.add("coupon_type");
+		firstPromotionAttribute.add("ad_media_type");
+		firstPromotionAttribute.add("display_provider");
+		firstPromotionAttribute.add("promo_cost");
+		firstPromotionAttribute.add("promo_begin_date");
+		firstPromotionAttribute.add("promo_end_date");
+		promotion.addAttributes("Promotion", false, firstPromotionAttribute);
 	}
 	
 	/**

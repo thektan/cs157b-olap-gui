@@ -93,9 +93,11 @@ public class DatabaseModel
 	 */
 	public void execute() throws SQLException
 	{
+		// Order specific check on if the boolean array is true/false for dimensions selected.
 		if (dimensions_boolean.get(0)) dimensions.add("store");
 		if (dimensions_boolean.get(1)) dimensions.add("time");
 		if (dimensions_boolean.get(2)) dimensions.add("product");
+		if (dimensions_boolean.get(3)) dimensions.add("promotion");
 		
 		DatabaseFrame.updateTable(constructSQL(dimensions, attributes, fact_attributes));
 	}

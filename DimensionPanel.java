@@ -17,7 +17,7 @@ public class DimensionPanel extends JPanel
 	JCheckBox dimension; 
 	String titleDimension;
 	ArrayList<AttributePanel> attributePanelList;
-	Boolean isSelected = false;
+	boolean isSelected = false;
 	JPanel firstPanel;
 	
 	/**
