@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class DimensionPanel extends JPanel {
@@ -15,12 +16,17 @@ public class DimensionPanel extends JPanel {
 	String titleDimension;
 	ArrayList<AttributePanel> attributePanelList;
 	Boolean isSelected = false;
+	JPanel firstPanel;
 	
+	ArrayList<String> sliceList;
+	ArrayList<String> diceList;
 	
 	public DimensionPanel(String title)
 	{
 		titleDimension = title;
 		attributePanelList = new ArrayList<AttributePanel>();
+		sliceList = new ArrayList<String>();
+		diceList = new ArrayList<String>();
 		onCreate();		
 	}
 	
@@ -28,12 +34,14 @@ public class DimensionPanel extends JPanel {
 	public void onCreate()
 	{	
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		JPanel firstPanel = new JPanel();
+		firstPanel = new JPanel();
 		firstPanel.setLayout((new BoxLayout(firstPanel, BoxLayout.Y_AXIS)));
 		dimension = new JCheckBox(titleDimension);
 		dimension.addActionListener(dimensionIsSelected());
 		slice = new JButton("Slice");
+		slice.addActionListener(sliceListener());
 		dice = new JButton("dice");
+		dice.addActionListener(diceListener());
 		firstPanel.add(dimension);
 		firstPanel.add(slice);
 		firstPanel.add(dice);
@@ -41,6 +49,60 @@ public class DimensionPanel extends JPanel {
 	}
 	
 	public Boolean getSelection()	{return isSelected;}
+	
+	public ActionListener sliceListener()
+	{
+		return new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String tempInput1 =  JOptionPane.showInputDialog(firstPanel
+						,"Enter the attribute");
+				String tempInput2 =  JOptionPane.showInputDialog(firstPanel
+						,"Enter the value");
+				
+				//System.out.println(tempInput1 + " -- " + tempInput2);
+				
+				if(tempInput1 != null && tempInput2 != null)
+				{
+					String tempString = tempInput1 +" = '"+tempInput2+"'";
+					System.out.println(tempString);
+					DatabaseFrame.model.slice_list.add(tempString);
+				}
+
+			}
+		};		
+	}
+	
+	
+	public ActionListener diceListener()
+	{
+		return new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String tempInput1 =  JOptionPane.showInputDialog(firstPanel
+						,"Enter the attribute");
+				String tempInput2 =  JOptionPane.showInputDialog(firstPanel
+						,"Enter the value");
+				
+				//System.out.println(tempInput1 + " -- " + tempInput2);
+				
+				if(tempInput1 != null && tempInput2 != null)
+				{
+					String tempString = tempInput1 +" = '"+tempInput2+"'";
+					System.out.println(tempString);
+					diceList.add(tempString);
+				}
+
+			}
+		};		
+	}	
+	
+	
+	
 	public ActionListener dimensionIsSelected()
 	{
 

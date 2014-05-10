@@ -91,6 +91,7 @@ public class FactPanel extends JPanel{
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					//System.out.println(arg0.getActionCommand());
+					DatabaseFrame.model.fact_string = arg0.getActionCommand();
 				}
 
 			});

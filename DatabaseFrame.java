@@ -127,8 +127,8 @@ public class DatabaseFrame extends JFrame{
 		product.addAttributes("Product Section",true,thirdProductAttribute);
 		
 		ArrayList<String> fourthProductAttribute  = new ArrayList<String>();
-		fourthProductAttribute.add("unit_per_retail_case");
-		fourthProductAttribute.add("unit_per_shipping_case");
+		fourthProductAttribute.add("units_per_retail_case");
+		fourthProductAttribute.add("units_per_shipping_case");
 		fourthProductAttribute.add("cases_per_pallet");
 		product.addAttributes("Product Unit",true,fourthProductAttribute);
 	

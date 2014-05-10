@@ -18,7 +18,8 @@ public class DatabaseModel
 {
 	public static String SQL = ""; // The SQL statement to be executed.
 	public static String fact_table_name = "sales_fact"; // Identify the fact table name.
-	
+	public String fact_string;
+	public ArrayList<String> slice_list = new ArrayList<String>();
 	public List<Boolean> dimensions_boolean = new ArrayList<Boolean>();
 	public List<String> dimensions = new ArrayList<String>(), 
 						attributes = new ArrayList<String>(), 
@@ -31,9 +32,9 @@ public class DatabaseModel
 	 * @param fact_attributes the attributes of the fact table.
 	 * @return SQL the SQL statement that will be executed.
 	 */
-	public static String constructSQL(List<String> dimensions, 
-									  List<String> attributes,
-									  List<String> fact_attributes)
+	public String constructSQL(List<String> dimensions, 
+							   List<String> attributes,
+							   List<String> fact_attributes)
 	{	
 		SQL += "SELECT";
 		for (String s : attributes) // Gets the selected attributes.
@@ -52,6 +53,8 @@ public class DatabaseModel
 		// Assumes that primary keys will be the format "[dimension_name]_key"
 		for (String s : dimensions)
 			SQL += " " + fact_table_name + "." + s + "_key = " + s + "." + s + "_key AND";
+		for (String s : slice_list)
+			SQL += " " + s + " AND";
 		SQL = removeLastChar(SQL, 4); // Remove the trailing AND.
 		
 		SQL += " GROUP BY";
