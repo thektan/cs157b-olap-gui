@@ -26,7 +26,13 @@ public class AttributePanel extends JPanel
 	ArrayList<JRadioButton> radioList;
 	ArrayList<JCheckBox> checkBoxList; 
 	
-	public AttributePanel(String title,boolean isHierarchy,ArrayList<String> attribute)
+	/**
+	 * Constructs the attribute panel.
+	 * @param title the title of the panel.
+	 * @param isHierarchy if the set of attributes is applicable for a hierarchy.
+	 * @param attribute the set of attributes.
+	 */
+	public AttributePanel(String title, boolean isHierarchy, ArrayList<String> attribute)
 	{
 		this.isHierarchy = isHierarchy;
 		attributeList = attribute;
@@ -38,6 +44,10 @@ public class AttributePanel extends JPanel
 		this.add(scrPane);
 	}
 	
+	/**
+	 * Creates an attribute panel with radio buttons for hierarchy 
+	 * applicable attributes.
+	 */
 	public void hierarchyCreate()
 	{	
 		final ButtonGroup radioGroup  = new ButtonGroup();
@@ -53,20 +63,22 @@ public class AttributePanel extends JPanel
 				@Override
 				public void actionPerformed(ActionEvent arg0) 
 				{
-					//System.out.println(arg0.getActionCommand());
 					// Store Selections
-					if (title.equals("Store Location-Hierarchy")) DatabaseFrame.store_location = arg0.getActionCommand();
-					else if (title.equals("Store Sqft-Hierarchy")) DatabaseFrame.store_sqft = arg0.getActionCommand();
-					//System.out.println(DatabaseFrame.store_name + " " + DatabaseFrame.store_number + DatabaseFrame.store_location + DatabaseFrame.store_sqft);
+					if (title.equals("Store Location-Hierarchy")) 
+						DatabaseFrame.store_location = arg0.getActionCommand();
+					else if (title.equals("Store Sqft-Hierarchy")) 
+						DatabaseFrame.store_sqft = arg0.getActionCommand();
 				}
 			});
 			radioList.add(tempButton);
 			radioGroup.add(tempButton);
 			radioPanel.add(tempButton);
-
 		}
 	}
 	
+	/**
+	 * Creates a normal set of attributes with check boxes.
+	 */
 	public void normalCreate()
 	{	
 		checkBoxList = new ArrayList<JCheckBox>();
@@ -82,10 +94,10 @@ public class AttributePanel extends JPanel
 				public void actionPerformed(ActionEvent arg0) {
 					if(tempButton.isSelected())
 					{
-						//System.out.println(arg0.getActionCommand());
-						
-						if (arg0.getActionCommand().equals("name")) DatabaseFrame.store_name = !DatabaseFrame.store_name;
-						else if (arg0.getActionCommand().equals("store_number")) DatabaseFrame.store_number = !DatabaseFrame.store_number;
+						if (arg0.getActionCommand().equals("name")) 
+							DatabaseFrame.store_name = !DatabaseFrame.store_name;
+						else if (arg0.getActionCommand().equals("store_number")) 
+							DatabaseFrame.store_number = !DatabaseFrame.store_number;
 					}
 				}
 			});
@@ -94,13 +106,16 @@ public class AttributePanel extends JPanel
 		}
 	}
 	
+	/**
+	 * Retrieves the input selected.
+	 * @return input the name of the input.
+	 */
 	public String retrieveInput()
 	{
-		//System.out.println("test");
-		String input="";
+		String input = "";
 		if(isHierarchy)
 		{
-			for(int i =0; i < radioList.size();i++ )
+			for(int i = 0; i < radioList.size(); i++)
 			{
 				JRadioButton tempButton = radioList.get(i);
 				
@@ -109,15 +124,15 @@ public class AttributePanel extends JPanel
 					input = tempButton.getActionCommand();
 				}	
 			}
-		}else
+		} 
+		else
 		{
-			for(int i =0; i < checkBoxList.size();i++ )
+			for(int i =0; i < checkBoxList.size(); i++)
 			{
 				JCheckBox tempButton = checkBoxList.get(i);
 				
 				if(tempButton.isSelected())
 				{
-					//input = input + tempButton.getActionCommand();
 					if(!tempButton.getActionCommand().isEmpty())
 						DatabaseFrame.model.attributes.add(tempButton.getActionCommand());
 				}		

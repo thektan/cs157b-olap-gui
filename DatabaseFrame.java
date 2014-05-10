@@ -20,8 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class DatabaseFrame extends JFrame{
-
+public class DatabaseFrame extends JFrame
+{
 	private static Connection connection;
 	private static PreparedStatement preparedStatement = null;
 	
@@ -40,6 +40,11 @@ public class DatabaseFrame extends JFrame{
 	public static boolean store_number = false;
 	public static String store_location, store_sqft;
 	
+	/**
+	 * Constructs the database frame. 
+	 * @param conn the connection to the database.
+	 * @param model the model of the application.
+	 */
 	public DatabaseFrame(final Connection conn, DatabaseModel model)
 	{
 		connection = conn;
@@ -48,9 +53,11 @@ public class DatabaseFrame extends JFrame{
 		setLayout(new GridLayout(1,2));
 		onCreate();
 		populateDimension();
-		
 	}
 	
+	/**
+	 * Creates the panels and other elements for the frame.
+	 */
 	public void onCreate()
 	{
 		leftPanel = new JPanel();
@@ -58,7 +65,8 @@ public class DatabaseFrame extends JFrame{
 		store = new DimensionPanel("store");
 		time = new DimensionPanel("time");
 		product = new DimensionPanel("product");
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+		//leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+		leftPanel.setLayout(new GridLayout(3,1));
 		leftPanel.add(store);
 		leftPanel.add(time);
 		leftPanel.add(product);
@@ -79,17 +87,11 @@ public class DatabaseFrame extends JFrame{
 		add(leftPanel);
 		add(rightPanel);
 		rightPanel.add(tablePanel);
-		
-		try {
-			updateTable("SELECT * FROM time");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 	
-	
+	/**
+	 * Inserts in the dimensions and defines the attribute groups.
+	 */
 	public void populateDimension()
 	{
 
@@ -136,7 +138,7 @@ public class DatabaseFrame extends JFrame{
 		fourthProductAttribute.add("cases_per_pallet");
 		product.addAttributes("Product Unit",true,fourthProductAttribute);
 	
-			
+		
 		ArrayList<String> firstTimeAttribute  = new ArrayList<String>();	
 		firstTimeAttribute .add("date");
 		time.addAttributes("Time", false, firstTimeAttribute);

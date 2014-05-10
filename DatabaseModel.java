@@ -7,9 +7,6 @@
  * @author Kevin Tan
  * @version 2 - May 4, 2014
  */
-
-import static java.util.Arrays.asList;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,10 +97,8 @@ public class DatabaseModel
 		if (dimensions_boolean.get(1)) dimensions.add("time");
 		if (dimensions_boolean.get(2)) dimensions.add("product");
 		
-		//System.out.println(constructSQL(dimensions, attributes, fact_attributes));
 		DatabaseFrame.updateTable(constructSQL(dimensions, attributes, fact_attributes));
 	}
-	
 	
 	/**
 	 * For testing purposes.

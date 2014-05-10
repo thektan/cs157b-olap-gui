@@ -8,11 +8,8 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class DimensionPanel extends JPanel 
@@ -23,6 +20,10 @@ public class DimensionPanel extends JPanel
 	Boolean isSelected = false;
 	JPanel firstPanel;
 	
+	/**
+	 * Creates the dimension panel.
+	 * @param title the dimension name.
+	 */
 	public DimensionPanel(String title)
 	{
 		titleDimension = title;
@@ -30,6 +31,9 @@ public class DimensionPanel extends JPanel
 		onCreate();		
 	}
 	
+	/**
+	 * Creates the panels.
+	 */
 	public void onCreate()
 	{	
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -41,26 +45,33 @@ public class DimensionPanel extends JPanel
 		add(firstPanel);
 	}
 	
+	/**
+	 * Gets the selection is selected.
+	 * @return true if the selection is selected and false if it is not.
+	 */
 	public Boolean getSelection()	{ return isSelected; }
 	
+	/**
+	 * Switches if the selection when it is selected or unselected.
+	 */
 	public ActionListener dimensionIsSelected()
 	{
 		return new ActionListener()
 		{
-
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(dimension.isSelected())
-				{
-					isSelected = true;
-				}else
-				{
-					isSelected = false;
-				}
+				if (dimension.isSelected()) { isSelected = true; }
+				else { isSelected = false; }
 			}
 		};
 	}
 	
+	/**
+	 * Adds the attribute panels.
+	 * @param title the name of the attribute.
+	 * @param isHierarchy if the attributes are hierarchical.
+	 * @param attributeList the set of attributes.
+	 */
 	public void addAttributes(String title,Boolean isHierarchy,ArrayList<String> attributeList)
 	{
 		AttributePanel tempAttribute;
