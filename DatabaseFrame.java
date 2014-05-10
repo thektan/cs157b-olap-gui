@@ -1,5 +1,10 @@
+import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -15,13 +20,12 @@ public class DatabaseFrame extends JFrame{
 	private static Connection connection;
 	private static PreparedStatement preparedStatement = null;
 	
-	JPanel leftPanel;
-	JPanel tablePanel;
+	JPanel leftPanel,rightPanel, tablePanel;
 	
 	DimensionPanel store;
 	DimensionPanel time;
 	DimensionPanel product;
-	
+	ArrayList<DimensionPanel> dimensionList;
 	
 	// Variables used to construct the SQL statement.
 	public static boolean store_name = false;
@@ -31,16 +35,18 @@ public class DatabaseFrame extends JFrame{
 	public DatabaseFrame(final Connection conn)
 	{
 		connection = conn;
-
+		dimensionList = new ArrayList<DimensionPanel>();
+		setLayout(new GridLayout(1,2));
 		onCreate();
 		populateDimension();
-		setLayout(new GridLayout(2,1));
+		
 	}
 	
 	
 	public void onCreate()
 	{
 		leftPanel = new JPanel();
+		leftPanel.setPreferredSize(new Dimension(200,200));
 		store = new DimensionPanel("store");
 		time = new DimensionPanel("time");
 		product = new DimensionPanel("product");
@@ -49,11 +55,22 @@ public class DatabaseFrame extends JFrame{
 		leftPanel.add(time);
 		leftPanel.add(product);
 		
+		dimensionList.add(store);
+		dimensionList.add(time);
+		dimensionList.add(product);
+		
+		rightPanel = new JPanel();
+		rightPanel.setLayout(new GridLayout(2,1));
+		FactPanel fact = new FactPanel();
+		fact.linkDimension(dimensionList);
+		rightPanel.add(fact);
+		
 		tablePanel = new JPanel();
 		tablePanel.setLayout(new GridLayout(0,1));
 		
 		add(leftPanel);
-		add(tablePanel);
+		add(rightPanel);
+		rightPanel.add(tablePanel);
 		
 		try {
 			updateTable("SELECT * FROM time");
@@ -61,6 +78,7 @@ public class DatabaseFrame extends JFrame{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 	
 	
@@ -72,16 +90,13 @@ public class DatabaseFrame extends JFrame{
 		firstStoreAttribute.add("store_number");
 		store.addAttributes("Store",false, firstStoreAttribute);
 		
-		
-		
 		ArrayList<String> secondStoreAttribute  = new ArrayList<String>();
 		secondStoreAttribute.add("store_street_address");
-		secondStoreAttribute.add("zip_code");
+		secondStoreAttribute.add("store_zip");
 		secondStoreAttribute.add("city");
-		secondStoreAttribute.add("county");
-		secondStoreAttribute.add("state");
+		secondStoreAttribute.add("store_county");
+		secondStoreAttribute.add("store_state");
 		store.addAttributes("Store Location",true, secondStoreAttribute);
-		
 		
 		ArrayList<String> thirdStoreAttribute  = new ArrayList<String>();
 		thirdStoreAttribute.add("meat_sqft");
@@ -110,10 +125,10 @@ public class DatabaseFrame extends JFrame{
 		ArrayList<String> fourthProductAttribute  = new ArrayList<String>();
 		fourthProductAttribute.add("unit_per_retail_case");
 		fourthProductAttribute.add("unit_per_shipping_case");
-		fourthProductAttribute.add("cases per pallet");
-		product.addAttributes("Product Units",true,fourthProductAttribute);
+		fourthProductAttribute.add("cases_per_pallet");
+		product.addAttributes("Product Unit",true,fourthProductAttribute);
 	
-		
+			
 		ArrayList<String> firstTimeAttribute  = new ArrayList<String>();	
 		firstTimeAttribute .add("date");
 		time.addAttributes("Time", false, firstTimeAttribute);
@@ -122,15 +137,14 @@ public class DatabaseFrame extends JFrame{
 		secondTimeAttribute.add("day_of_week");
 		secondTimeAttribute.add("week_number_in_year");
 		secondTimeAttribute.add("week_number_overall");
-		time.addAttributes("Time Day", true, secondTimeAttribute);
+		time.addAttributes("Time Week", true, secondTimeAttribute);
 		
 		ArrayList<String> thirdTimeAttribute  = new ArrayList<String>();
 		thirdTimeAttribute.add("day_number_in_month");
-		thirdTimeAttribute.add("month");
+		thirdTimeAttribute.add("Month");
 		thirdTimeAttribute.add("quarter");
 		thirdTimeAttribute.add("year");
 		time.addAttributes("Time Year", true, thirdTimeAttribute);
-
 	}
 	
 	/**

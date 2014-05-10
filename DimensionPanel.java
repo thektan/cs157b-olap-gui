@@ -10,11 +10,11 @@ public class DimensionPanel extends JPanel {
 	JCheckBox dimension; 
 	JButton slice,dice;
 	String titleDimension;
-	
+	ArrayList<AttributePanel> attributePanelList;
 	public DimensionPanel(String title)
 	{
 		titleDimension = title;
-	
+		attributePanelList = new ArrayList<AttributePanel>();
 		onCreate();		
 	}
 	
@@ -33,32 +33,38 @@ public class DimensionPanel extends JPanel {
 		add(firstPanel);
 	}
 	
-	public void addAttributes(String title,Boolean isHiearchy,ArrayList<String> attributeList)
+	public void addAttributes(String title,Boolean isHierarchy,ArrayList<String> attributeList)
 	{
+		AttributePanel tempAttribute;
 		String tempTitle;
-		if(isHiearchy)
+		if(isHierarchy)
 		{
 			tempTitle = title+ "-Hierarchy";
-			addHiearchyAttributes(tempTitle,attributeList);
+			tempAttribute = new AttributePanel(tempTitle,isHierarchy,attributeList);
+			
+			tempAttribute.hierarchyCreate();
 		}else
 		{
 			tempTitle = title + "-Normal Attribute";
-			addNormalAttributes(tempTitle,attributeList);
+			tempAttribute = new AttributePanel(tempTitle,isHierarchy,attributeList);
+			
+			tempAttribute.normalCreate();
 		}
-	}
-	
-	
-	public void addHiearchyAttributes(String title, ArrayList<String> attributeList)
-	{
-		AttributePanel tempAttribute = new AttributePanel(title,attributeList);
-		tempAttribute.hierarchyCreate();
+		
+		attributePanelList.add(tempAttribute);
 		add(tempAttribute);
 	}
 	
-	public void addNormalAttributes(String title, ArrayList<String> attributeList)
+	public String retrieveInput()
 	{
-		AttributePanel tempAttribute = new AttributePanel(title,attributeList);
-		tempAttribute.normalCreate();
-		add(tempAttribute);
+		String input = titleDimension;
+		for(int i = 0; i < attributePanelList.size();i++)
+		{
+			input.concat(attributePanelList.get(i).retrieveInput()+"::");
+		}
+		
+		return input;
+		
 	}
+	
 }

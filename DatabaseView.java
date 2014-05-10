@@ -9,7 +9,6 @@ public class DatabaseView {
 		Connection c = DAO.Connect();
 
 		DatabaseFrame view = new DatabaseFrame(c);
-		
 		view.setSize(1600,600);
 		view.setTitle("dataBase");
 		//view.setResizable(false);
