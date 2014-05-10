@@ -1,4 +1,7 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -11,6 +14,9 @@ public class DimensionPanel extends JPanel {
 	JButton slice,dice;
 	String titleDimension;
 	ArrayList<AttributePanel> attributePanelList;
+	Boolean isSelected = false;
+	
+	
 	public DimensionPanel(String title)
 	{
 		titleDimension = title;
@@ -25,6 +31,7 @@ public class DimensionPanel extends JPanel {
 		JPanel firstPanel = new JPanel();
 		firstPanel.setLayout((new BoxLayout(firstPanel, BoxLayout.Y_AXIS)));
 		dimension = new JCheckBox(titleDimension);
+		dimension.addActionListener(dimensionIsSelected());
 		slice = new JButton("Slice");
 		dice = new JButton("dice");
 		firstPanel.add(dimension);
@@ -32,6 +39,27 @@ public class DimensionPanel extends JPanel {
 		firstPanel.add(dice);
 		add(firstPanel);
 	}
+	
+	public Boolean getSelection()	{return isSelected;}
+	public ActionListener dimensionIsSelected()
+	{
+
+		return new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(dimension.isSelected())
+				{
+					isSelected = true;
+				}else
+				{
+					isSelected = false;
+				}
+			}
+		};
+	}
+	
 	
 	public void addAttributes(String title,Boolean isHierarchy,ArrayList<String> attributeList)
 	{
@@ -54,17 +82,31 @@ public class DimensionPanel extends JPanel {
 		attributePanelList.add(tempAttribute);
 		add(tempAttribute);
 	}
-	
+	/*
 	public String retrieveInput()
 	{
-		String input = titleDimension;
+		String input = titleDimension+ "--";
 		for(int i = 0; i < attributePanelList.size();i++)
 		{
-			input.concat(attributePanelList.get(i).retrieveInput()+"::");
+			input= input + attributePanelList.get(i).retrieveInput()+"::";
 		}
 		
 		return input;
 		
+	}
+	*/
+	
+	/**
+	 * Retrieve the input and add the values to the attribute array.
+	 */
+	public void retrieveInput()
+	{
+		for(int i = 0; i < attributePanelList.size(); i++)
+		{
+			// Only add the input if the input isn't empty.
+			if(!attributePanelList.get(i).retrieveInput().isEmpty())
+				DatabaseFrame.model.attributes.add(attributePanelList.get(i).retrieveInput());
+		}
 	}
 	
 }

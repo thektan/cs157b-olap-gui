@@ -9,12 +9,20 @@
  */
 
 import static java.util.Arrays.asList;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseModel 
 {
 	public static String SQL = ""; // The SQL statement to be executed.
 	public static String fact_table_name = "sales_fact"; // Identify the fact table name.
+	
+	public List<Boolean> dimensions_boolean = new ArrayList<Boolean>();
+	public List<String> dimensions = new ArrayList<String>(), 
+						attributes = new ArrayList<String>(), 
+						fact_attributes = new ArrayList<String>();
 	
 	/**
 	 * Constructs a SQL statement.
@@ -65,11 +73,37 @@ public class DatabaseModel
 		return s.substring(0, s.length() - i);
 	}
 	
+	/**
+	 * Clears all of the current array lists.
+	 */
+	public void clear()
+	{
+		SQL = "";
+		dimensions_boolean.clear();
+		dimensions.clear();
+		attributes.clear();
+		fact_attributes.clear();
+	}
+	
+	/**
+	 * Executes the stored arrays and creates the SQL statement.
+	 * @throws SQLException 
+	 */
+	public void execute() throws SQLException
+	{
+		if (dimensions_boolean.get(0)) dimensions.add("store");
+		if (dimensions_boolean.get(1)) dimensions.add("time");
+		if (dimensions_boolean.get(2)) dimensions.add("product");
+		
+		//System.out.println(constructSQL(dimensions, attributes, fact_attributes));
+		DatabaseFrame.updateTable(constructSQL(dimensions, attributes, fact_attributes));
+	}
+	
 	
 	/**
 	 * For testing purposes.
 	 * @param args not used.
-	 */
+	 *//*
 	public static void main(String[] args) 
 	{	
 		List<String> dimensions = asList("product", "promotion");
@@ -78,5 +112,6 @@ public class DatabaseModel
 		
 		System.out.println(constructSQL(dimensions, attributes, fact_attributes));
 	}
+	*/
 
 }

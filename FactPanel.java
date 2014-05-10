@@ -2,7 +2,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -17,8 +19,6 @@ public class FactPanel extends JPanel{
 	JPanel radioPanel;
 	JButton query;
 	ArrayList<DimensionPanel> dimensionPanelList;
-	
-	
 	
 	public FactPanel()
 	{
@@ -45,11 +45,25 @@ public class FactPanel extends JPanel{
 		return new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) 
+			{	
 				
-				for(int i =0 ; i < dimensionPanelList.size(); i++)
+				DatabaseFrame.model.clear(); // Clear the current values.
+				
+				// Populate the lists.
+				for(int i = 0; i < dimensionPanelList.size(); i++)
 				{
-					System.out.println(dimensionPanelList.get(i).retrieveInput());					
+					//System.out.println(dimensionPanelList.get(i).retrieveInput() + dimensionPanelList.get(i).getSelection());
+					dimensionPanelList.get(i).retrieveInput();
+					DatabaseFrame.model.dimensions_boolean.add(dimensionPanelList.get(i).getSelection());
+				}
+				
+
+				try {
+					DatabaseFrame.model.execute();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				
 			}

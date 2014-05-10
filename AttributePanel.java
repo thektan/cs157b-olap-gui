@@ -98,7 +98,7 @@ public class AttributePanel extends JPanel {
 	public String retrieveInput()
 	{
 		//System.out.println("test");
-		String input="";;
+		String input="";
 		if(isHierarchy)
 		{
 			for(int i =0; i < radioList.size();i++ )
@@ -118,7 +118,9 @@ public class AttributePanel extends JPanel {
 				
 				if(tempButton.isSelected())
 				{
-					input.concat(tempButton.getActionCommand()+";");
+					//input = input + tempButton.getActionCommand();
+					if(!tempButton.getActionCommand().isEmpty())
+						DatabaseFrame.model.attributes.add(tempButton.getActionCommand());
 				}		
 			}
 		}	

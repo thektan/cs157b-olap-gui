@@ -20,7 +20,10 @@ public class DatabaseFrame extends JFrame{
 	private static Connection connection;
 	private static PreparedStatement preparedStatement = null;
 	
-	JPanel leftPanel,rightPanel, tablePanel;
+	public static DatabaseModel model;
+	
+	JPanel leftPanel,rightPanel;
+	static JPanel tablePanel;
 	
 	DimensionPanel store;
 	DimensionPanel time;
@@ -32,9 +35,10 @@ public class DatabaseFrame extends JFrame{
 	public static boolean store_number = false;
 	public static String store_location, store_sqft;
 	
-	public DatabaseFrame(final Connection conn)
+	public DatabaseFrame(final Connection conn, DatabaseModel model)
 	{
 		connection = conn;
+		this.model = model;
 		dimensionList = new ArrayList<DimensionPanel>();
 		setLayout(new GridLayout(1,2));
 		onCreate();
@@ -184,7 +188,7 @@ public class DatabaseFrame extends JFrame{
 	 * @param statement the SQL query to be executed
 	 * @throws SQLException
 	 */
-	public void updateTable(String statement) throws SQLException
+	public static void updateTable(String statement) throws SQLException
 	{
 		tablePanel.removeAll(); // first clear the existing table
 

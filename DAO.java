@@ -10,7 +10,7 @@ public class DAO
 {
 	public static final String USERNAME = "root";
 	public static final String PASSWORD = "";
-	public static final String SERVERNAME = "localhost";
+	public static final String SERVERNAME = "localhost:3306";
 	public static final String DATABASE = "project";
 	
 	private Connection conn;

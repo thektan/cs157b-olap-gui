@@ -7,8 +7,8 @@ public class DatabaseView {
 	public static void main(String[] args)
 	{
 		Connection c = DAO.Connect();
-
-		DatabaseFrame view = new DatabaseFrame(c);
+		DatabaseModel model = new DatabaseModel();
+		DatabaseFrame view = new DatabaseFrame(c, model);
 		view.setSize(1600,600);
 		view.setTitle("dataBase");
 		//view.setResizable(false);
