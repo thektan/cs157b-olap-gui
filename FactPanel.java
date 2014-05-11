@@ -68,7 +68,7 @@ public class FactPanel extends JPanel
 				for(int i = 0; i < dimensionPanelList.size(); i++)
 				{
 					//System.out.println(dimensionPanelList.get(i).retrieveInput() + dimensionPanelList.get(i).getSelection());
-					dimensionPanelList.get(i).retrieveInput();
+					dimensionPanelList.get(i).retrieveInput(dimensionPanelList.get(i).getSelection());
 					DatabaseFrame.model.dimensions_boolean.add(dimensionPanelList.get(i).getSelection());
 				}
 				

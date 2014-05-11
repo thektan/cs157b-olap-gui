@@ -96,15 +96,17 @@ public class DimensionPanel extends JPanel
 
 	/**
 	 * Retrieve the input and add the values to the attribute array.
+	 * @param dimension checks if dimension is selected.
 	 */
-	public void retrieveInput()
+	public void retrieveInput(boolean dimension)
 	{
-		for(int i = 0; i < attributePanelList.size(); i++)
-		{
-			// Only add the input if the input isn't empty.
-			if(!attributePanelList.get(i).retrieveInput().isEmpty())
-				DatabaseFrame.model.attributes.add(attributePanelList.get(i).retrieveInput());
-		}
+		if (dimension) // Only add the attributes if dimension is selected.
+			for(int i = 0; i < attributePanelList.size(); i++)
+			{
+				// Only add the input if the input isn't empty.
+				if(!attributePanelList.get(i).retrieveInput().isEmpty())
+					DatabaseFrame.model.attributes.add(attributePanelList.get(i).retrieveInput());
+			}
 	}
 	
 }
